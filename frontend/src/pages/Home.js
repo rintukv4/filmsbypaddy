@@ -29,7 +29,6 @@ function Hero() {
         />
       </motion.div>
       <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-[#080808]/50" />
-      <PlaceholderTag label="Stock placeholder footage — replace /public/media/hero-loop.mp4 with your reel" className="hidden md:block top-28 right-10" />
 
       <motion.div style={{ opacity: fade }} className="relative z-10 w-full px-5 pb-24 md:px-10 md:pb-16">
         <h1 className="font-display uppercase leading-[0.82]">
