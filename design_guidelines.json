@@ -1,0 +1,57 @@
+{
+  "app_type": "hybrid_fullstack",
+  "brand": {
+    "name": "FilmsByPaddy",
+    "subtitle": "Concert Photography & Live Cinematography",
+    "tagline": "Capturing the raw frequency of live music.",
+    "aesthetic": "Dark immersive near-black, warm amber/stage-light accents, film grain texture, massive editorial headings."
+  },
+  "typography": {
+    "headings": "Unbounded / Anton / Space Grotesk (Condensed Display)",
+    "body": "Inter / Plus Jakarta Sans"
+  },
+  "colors": {
+    "background": "#09090b",
+    "surface": "#121216",
+    "border": "#27272a",
+    "text_primary": "#f4f4f5",
+    "text_muted": "#a1a1aa",
+    "accent_amber": "#f59e0b",
+    "accent_glow": "rgba(245, 158, 11, 0.15)"
+  },
+  "image_urls": [
+    {
+      "category": "Hero & Stage Backdrop",
+      "url": "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3",
+      "description": "Epic concert stage lighting with dense audience silhouette"
+    },
+    {
+      "category": "Artist Live 1",
+      "url": "https://images.unsplash.com/photo-1565035010268-a3816f98589a",
+      "description": "Energetic live performance silhouette with warm flare"
+    },
+    {
+      "category": "Festival Crowd",
+      "url": "https://images.unsplash.com/photo-1506157786151-b8491531f063",
+      "description": "Massive festival crowd raising hands under amber stage wash"
+    },
+    {
+      "category": "Cinematic Blue Stage",
+      "url": "https://images.unsplash.com/photo-1563841930606-67e2bce48b78",
+      "description": " Moody blue stage production lights and smoke"
+    }
+  ],
+  "sections": [
+    "Hero / Showreel Player",
+    "Work & Featured Projects (Unmaad/IIMB, Pravega/IISc, Rhapsody/IISc, Farhan Akhtar, Aastha Gill, Mohit Chauhan)",
+    "Artists & Headliners Directory",
+    "Festivals & Arena Log",
+    "Services (Live Cinematography, Tour Documentary, Stage Stills)",
+    "About Paddy",
+    "Contact & Booking Enquiry (Database stored, validation, success feedback)"
+  ],
+  "accessibility_and_testing": {
+    "data_testid_convention": "kebab-case role-based testid attributes on all interactive and informational elements",
+    "contrast": "WCAG AA compliant warm off-black and amber accents"
+  }
+}
