@@ -1,57 +1,221 @@
 {
-  "app_type": "hybrid_fullstack",
-  "brand": {
-    "name": "FilmsByPaddy",
-    "subtitle": "Concert Photography & Live Cinematography",
-    "tagline": "Capturing the raw frequency of live music.",
-    "aesthetic": "Dark immersive near-black, warm amber/stage-light accents, film grain texture, massive editorial headings."
+  "theme": "dark",
+  "colors": {
+    "background": "#080808",
+    "text_primary": "#F7F7F5",
+    "text_secondary": "#A0A0A0",
+    "accent": "#FF5500",
+    "surface": "#121212",
+    "border": "#222222"
   },
   "typography": {
-    "headings": "Unbounded / Anton / Space Grotesk (Condensed Display)",
-    "body": "Inter / Plus Jakarta Sans"
+    "headings": {
+      "family": "Bebas Neue",
+      "weight": "400",
+      "tracking": "tracking-normal"
+    },
+    "body": {
+      "family": "Inter",
+      "weight": "400",
+      "tracking": "tracking-normal"
+    }
   },
-  "colors": {
-    "background": "#09090b",
-    "surface": "#121216",
-    "border": "#27272a",
-    "text_primary": "#f4f4f5",
-    "text_muted": "#a1a1aa",
-    "accent_amber": "#f59e0b",
-    "accent_glow": "rgba(245, 158, 11, 0.15)"
-  },
-  "image_urls": [
+  "visual_enhancers": [
+    "Heavy vignette overlays on full-screen images (bg-black/40 to transparent)",
+    "Subtle film grain texture over the entire #080808 background",
+    "High-contrast lighting emphasis: text elements glowing warmly or catching the #FF5500 accent color on hover",
+    "Edge-to-edge full-bleed images to emphasize scale and immersion"
+  ],
+  "components": [
     {
-      "category": "Hero & Stage Backdrop",
-      "url": "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3",
-      "description": "Epic concert stage lighting with dense audience silhouette"
+      "name": "Navigation",
+      "instructions": "Fixed glassmorphic header (bg-black/50 backdrop-blur-md) with Bebas Neue logo and minimalist links."
     },
     {
-      "category": "Artist Live 1",
-      "url": "https://images.unsplash.com/photo-1565035010268-a3816f98589a",
-      "description": "Energetic live performance silhouette with warm flare"
+      "name": "Hero Section",
+      "instructions": "Full-screen fixed background image (project_heroes) with massive Bebas Neue text (text-7xl to text-[10vw]). Text should have mix-blend-difference or heavy drop shadow for contrast."
     },
     {
-      "category": "Festival Crowd",
-      "url": "https://images.unsplash.com/photo-1506157786151-b8491531f063",
-      "description": "Massive festival crowd raising hands under amber stage wash"
+      "name": "Image Grid / Masonry",
+      "instructions": "For instagram grid and portfolio pages. No gaps or 1px borders between images. Hover reveals #FF5500 tint overlay or title."
     },
     {
-      "category": "Cinematic Blue Stage",
-      "url": "https://images.unsplash.com/photo-1563841930606-67e2bce48b78",
-      "description": " Moody blue stage production lights and smoke"
+      "name": "Video Poster",
+      "instructions": "Large 16:9 container spanning full width with 'showreel_poster' image, featuring a glowing #FF5500 play button in center."
     }
   ],
-  "sections": [
-    "Hero / Showreel Player",
-    "Work & Featured Projects (Unmaad/IIMB, Pravega/IISc, Rhapsody/IISc, Farhan Akhtar, Aastha Gill, Mohit Chauhan)",
-    "Artists & Headliners Directory",
-    "Festivals & Arena Log",
-    "Services (Live Cinematography, Tour Documentary, Stage Stills)",
-    "About Paddy",
-    "Contact & Booking Enquiry (Database stored, validation, success feedback)"
+  "grids": [
+    "bento grid (Tetris Mode) for Instagram layouts",
+    "1-column mobile, 2-column or asymmetrical multi-column for desktop project pages to let photos breathe"
   ],
-  "accessibility_and_testing": {
-    "data_testid_convention": "kebab-case role-based testid attributes on all interactive and informational elements",
-    "contrast": "WCAG AA compliant warm off-black and amber accents"
-  }
+  "layouts": [
+    "Asymmetrical splits (text on one side, massive bleeding image on the other)",
+    "Edge-to-edge full bleed containers without standard max-w constraints for photo showcases"
+  ],
+  "motion": [
+    "Slow parallax scrolling on hero background images",
+    "Fade up and reveal animations for typography on scroll",
+    "Hover states on images that slightly scale them up (scale-105) with long transition duration (duration-700)"
+  ],
+  "accessibility": [
+    "Ensure all text over images has a gradient overlay behind it for at least 4.5:1 contrast",
+    "Provide aria-labels for all image grid items",
+    "All interactive elements must include data-testid attribute"
+  ],
+  "instructions_to_main_agent": "Focus purely on a cinematic, photography-first experience. Use massive typography (Bebas Neue) and edge-to-edge images. Let the dark negative space (#080808) create drama. Avoid typical SaaS UI components like cards with padding and borders. Photography and video posters should dominate the real estate.",
+  "image_urls": {
+    "project_heroes": [
+      {
+        "url": "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODd8MHwxfHNlYXJjaHwyfHxjb25jZXJ0JTIwc3RhZ2UlMjBkYXJrJTIwd2lkZXxlbnwwfHx8fDE3OTA0MTA0NTJ8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Wide concert stage brightly lit from behind"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODd8MHwxfHNlYXJjaHwzfHxjb25jZXJ0JTIwc3RhZ2UlMjBkYXJrJTIwd2lkZXxlbnwwfHx8fDE3OTA0MTA0NTJ8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Band performing wide shot with crowd hands"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODd8MHwxfHNlYXJjaHwxfHxjb25jZXJ0JTIwc3RhZ2UlMjBkYXJrJTIwd2lkZXxlbnwwfHx8fDE3OTA0MTA0NTJ8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Dark stage with dramatic golden backlighting"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600779547877-be592ef5aad3?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODd8MHwxfHNlYXJjaHw0fHxjb25jZXJ0JTIwc3RhZ2UlMjBkYXJrJTIwd2lkZXxlbnwwfHx8fDE3OTA0MTA0NTJ8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Musical instruments under blue spotlights and fog"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODF8MHwxfHNlYXJjaHwzfHxsaXZlJTIwbXVzaWMlMjBkaiUyMGNvbmNlcnR8ZW58MHx8fHwxNzkwNDEwNDUyfDA&ixlib=rb-4.1.0&q=85",
+        "description": "Explosive stage lights over massive crowd"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODF8MHwxfHNlYXJjaHwxfHxsaXZlJTIwbXVzaWMlMjBkaiUyMGNvbmNlcnR8ZW58MHx8fHwxNzkwNDEwNDUyfDA&ixlib=rb-4.1.0&q=85",
+        "description": "Warm orange stage wash wide shot"
+      }
+    ],
+    "artists": [
+      {
+        "url": "https://images.unsplash.com/photo-1576967402682-19976eb930f2?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzZ8MHwxfHNlYXJjaHwyfHxzaW5nZXIlMjBtaWNyb3Bob25lJTIwcGVyZm9ybWFuY2UlMjBjb25jZXJ0fGVufDB8fHx8MTc5MDQxMDQ2M3ww&ixlib=rb-4.1.0&q=85",
+        "description": "Singer silhouette against pink and purple stage lights"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1595422656857-ced3a4a0ce25?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzZ8MHwxfHNlYXJjaHw0fHxzaW5nZXIlMjBtaWNyb3Bob25lJTIwcGVyZm9ybWFuY2UlMjBjb25jZXJ0fGVufDB8fHx8MTc5MDQxMDQ2M3ww&ixlib=rb-4.1.0&q=85",
+        "description": "Singer looking up into smoky stage lights"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1464375117522-1311d6a5b81f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxOTF8MHwxfHNlYXJjaHwxfHxndWl0YXJpc3QlMjBzdGFnZSUyMGxpZ2h0fGVufDB8fHx8MTc5MDQxMDQ2M3ww&ixlib=rb-4.1.0&q=85",
+        "description": "Guitarist bathed in moody blue and warm stage lighting"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1519326773765-3ae3b02c44cc?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxOTF8MHwxfHNlYXJjaHw0fHxndWl0YXJpc3QlMjBzdGFnZSUyMGxpZ2h0fGVufDB8fHx8MTc5MDQxMDQ2M3ww&ixlib=rb-4.1.0&q=85",
+        "description": "Silhouette of guitarist with flying hair under strong spotlight"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1549761505-a31eb21119d6?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODl8MHwxfHNlYXJjaHwyfHxzaW5nZXIlMjBzcG90bGlnaHQlMjBzaWxob3VldHRlfGVufDB8fHx8MTc5MDQxMDQ1Mnww&ixlib=rb-4.1.0&q=85",
+        "description": "Monochrome spotlight silhouette of musician with guitar"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1603562767384-c8fe55858c2f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODl8MHwxfHNlYXJjaHw0fHxzaW5nZXIlMjBzcG90bGlnaHQlMjBzaWxob3VldHRlfGVufDB8fHx8MTc5MDQxMDQ1Mnww&ixlib=rb-4.1.0&q=85",
+        "description": "Dramatic red light silhouette of an artist on stage"
+      }
+    ],
+    "festivals": [
+      {
+        "url": "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHwyfHxuaWdodCUyMGZlc3RpdmFsJTIwY3Jvd2R8ZW58MHx8fHwxNzkwNDEwNDUyfDA&ixlib=rb-4.1.0&q=85",
+        "description": "Warm glowing festival stage illuminating a massive audience"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1506157786151-b8491531f063?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHw0fHxuaWdodCUyMGZlc3RpdmFsJTIwY3Jvd2R8ZW58MHx8fHwxNzkwNDEwNDUyfDA&ixlib=rb-4.1.0&q=85",
+        "description": "Silhouettes of festival goers with hands raised"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1665035212282-3e117d618b36?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHwzfHxuaWdodCUyMGZlc3RpdmFsJTIwY3Jvd2R8ZW58MHx8fHwxNzkwNDEwNDUyfDA&ixlib=rb-4.1.0&q=85",
+        "description": "Expansive view of a nighttime festival crowd and towering stage"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHwxfHxuaWdodCUyMGZlc3RpdmFsJTIwY3Jvd2R8ZW58MHx8fHwxNzkwNDEwNDUyfDA&ixlib=rb-4.1.0&q=85",
+        "description": "Nighttime crowd facing brightly lit multi-colored festival stage"
+      }
+    ],
+    "showreel_poster": [
+      {
+        "url": "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODF8MHwxfHNlYXJjaHw0fHxsaXZlJTIwbXVzaWMlMjBkaiUyMGNvbmNlcnR8ZW58MHx8fHwxNzkwNDEwNDUyfDA&ixlib=rb-4.1.0&q=85",
+        "description": "Vibrant blue and green lasers shooting over a dense concert crowd"
+      }
+    ],
+    "bts": [
+      {
+        "url": "https://images.unsplash.com/photo-1594394489098-74ac04c0fc2e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NzB8MHwxfHNlYXJjaHw0fHxjYW1lcmElMjBvcGVyYXRvciUyMGJlaGluZCUyMHNjZW5lc3xlbnwwfHx8fDE3OTA0MTA0NTJ8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Professional cinema camera setup on a dark studio set"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1625690303837-654c9666d2d0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NzB8MHwxfHNlYXJjaHwxfHxjYW1lcmElMjBvcGVyYXRvciUyMGJlaGluZCUyMHNjZW5lc3xlbnwwfHx8fDE3OTA0MTA0NTJ8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Camera operator silhouette in dramatic blue and red stage lighting"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1612544409025-e1f6a56c1152?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NzB8MHwxfHNlYXJjaHwyfHxjYW1lcmElMjBvcGVyYXRvciUyMGJlaGluZCUyMHNjZW5lc3xlbnwwfHx8fDE3OTA0MTA0NTJ8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Wide shot of a film crew working on a massive lit soundstage"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1632187981988-40f3cbaeef5e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NzB8MHwxfHNlYXJjaHwzfHxjYW1lcmElMjBvcGVyYXRvciUyMGJlaGluZCUyMHNjZW5lc3xlbnwwfHx8fDE3OTA0MTA0NTJ8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Group of crew members gathered around technical gear in an industrial space"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1590486803833-1c5dc8ddd4c8?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2OTF8MHwxfHNlYXJjaHwyfHxtb29keSUyMHBob3RvZ3JhcGhlciUyMHdpdGglMjBjYW1lcmF8ZW58MHx8fHwxNzkwNDEwNDUyfDA&ixlib=rb-4.1.0&q=85",
+        "description": "Close up of photographer's hands holding a DSLR camera body"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1493863641943-9b68992a8d07?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2OTF8MHwxfHNlYXJjaHwzfHxtb29keSUyMHBob3RvZ3JhcGhlciUyMHdpdGglMjBjYW1lcmF8ZW58MHx8fHwxNzkwNDEwNDUyfDA&ixlib=rb-4.1.0&q=85",
+        "description": "Shallow focus of a photographer shooting with a DSLR out in the field"
+      }
+    ],
+    "about_portrait": [
+      {
+        "url": "https://images.unsplash.com/photo-1497316730643-415fac54a2af?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2OTF8MHwxfHNlYXJjaHw0fHxtb29keSUyMHBob3RvZ3JhcGhlciUyMHdpdGglMjBjYW1lcmF8ZW58MHx8fHwxNzkwNDEwNDUyfDA&ixlib=rb-4.1.0&q=85",
+        "description": "Moody, dramatic silhouette of a photographer holding a camera against sunset sky"
+      }
+    ],
+    "instagram_grid": [
+      {
+        "url": "https://images.unsplash.com/photo-1629327896333-7ecec1515ae5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzZ8MHwxfHNlYXJjaHwxfHxzaW5nZXIlMjBtaWNyb3Bob25lJTIwcGVyZm9ybWFuY2UlMjBjb25jZXJ0fGVufDB8fHx8MTc5MDQxMDQ2M3ww&ixlib=rb-4.1.0&q=85",
+        "description": "Silver microphone standing alone on a warmly lit stage"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1567663711269-0351025d18a8?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxOTF8MHwxfHNlYXJjaHwzfHxndWl0YXJpc3QlMjBzdGFnZSUyMGxpZ2h0fGVufDB8fHx8MTc5MDQxMDQ2M3ww&ixlib=rb-4.1.0&q=85",
+        "description": "Close up crop of hands playing an electric guitar under stage lights"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1453090927415-5f45085b65c0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODl8MHwxfHNlYXJjaHwzfHxzaW5nZXIlMjBzcG90bGlnaHQlMjBzaWxob3VldHRlfGVufDB8fHx8MTc5MDQxMDQ1Mnww&ixlib=rb-4.1.0&q=85",
+        "description": "Microphone on a stand engulfed in dense atmospheric stage fog"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODF8MHwxfHNlYXJjaHwyfHxsaXZlJTIwbXVzaWMlMjBkaiUyMGNvbmNlcnR8ZW58MHx8fHwxNzkwNDEwNDUyfDA&ixlib=rb-4.1.0&q=85",
+        "description": "Silhouette of a hand operating a neon red illuminated DJ deck"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1595971294624-80bcf0d7eb24?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxOTF8MHwxfHNlYXJjaHwyfHxndWl0YXJpc3QlMjBzdGFnZSUyMGxpZ2h0fGVufDB8fHx8MTc5MDQxMDQ2M3ww&ixlib=rb-4.1.0&q=85",
+        "description": "Monochrome shot of a guitarist wearing a hat from behind"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzZ8MHwxfHNlYXJjaHwzfHxzaW5nZXIlMjBtaWNyb3Bob25lJTIwcGVyZm9ybWFuY2UlMjBjb25jZXJ0fGVufDB8fHx8MTc5MDQxMDQ2M3ww&ixlib=rb-4.1.0&q=85",
+        "description": "Macro shot of a microphone mesh with colorful blurry background"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1615754890634-69ac8bca7189?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODl8MHwxfHNlYXJjaHwxfHxzaW5nZXIlMjBzcG90bGlnaHQlMjBzaWxob3VldHRlfGVufDB8fHx8MTc5MDQxMDQ1Mnww&ixlib=rb-4.1.0&q=85",
+        "description": "Solo artist on a dark moody stage lit by a single downward spotlight"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODd8MHwxfHNlYXJjaHwxfHxjb25jZXJ0JTIwc3RhZ2UlMjBkYXJrJTIwd2lkZXxlbnwwfHx8fDE3OTA0MTA0NTJ8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Wide concert view with dramatic golden beams cutting through the dark"
+      }
+    ]
+  },
+  "UNIVERSAL GUIDELINES FOR MAIN AGENT": [
+    "You tend to converge toward generic outputs. Avoid this: make creative, distinctive frontends that surprise and delight.",
+    "Dark colors look good when used independently without gradients. DO NOT use dark colors as gradients.",
+    "Create depth through layered design elements with z-index hierarchy and glass-morphism effects.",
+    "NEVER use AI assistant Emoji characters like 🤖🧠💭💡.",
+    "Do not center align the app container (.App { text-align: center; } is banned).",
+    "Use modern button styles relevant to the cinematic brand.",
+    "Every interaction needs micro-animations - hover states, transitions, parallax effects, and entrance animations.",
+    "DO NOT apply universal transition (transition: all). Use specific properties.",
+    "All interactive elements must include data-testid attribute for testing."
+  ]
 }
