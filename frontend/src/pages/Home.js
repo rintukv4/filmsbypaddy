@@ -24,7 +24,7 @@ function Hero() {
           muted
           loop
           playsInline
-          className="h-full w-full object-cover"
+          className="h-full w-full object-cover grayscale contrast-[1.18]"
           data-testid="hero-video"
         />
       </motion.div>
