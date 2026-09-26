@@ -20,7 +20,7 @@ const fallbackProjects = [
   { slug:"live-event-mohit-chauhan", title:"LIVE EVENT", artist:"Mohit Chauhan", event:"Live Event", venue:"Event venue", city:"India", year:"Editable", services:"Concert Coverage", description:"Editable project entry — add the real venue, city, year and media when ready.", image:images.crowd },
 ];
 
-function ScrollTop(){ const { pathname } = useLocation(); useEffect(()=>window.scrollTo(0,0),[pathname]); return null; }
+function ScrollTop(){ const { pathname } = useLocation(); useEffect(()=>{ window.scrollTo(0,0); },[pathname]); return null; }
 function Header(){ const [open,setOpen]=useState(false); const links=["WORK","ARTISTS","FESTIVALS","SERVICES","ABOUT"]; return <header className="site-header" data-testid="site-header"><Link to="/" className="wordmark" data-testid="brand-home-link">FILMS<span>BY</span>PADDY</Link><nav className={open?"nav open":"nav"}>{links.map(x=><Link key={x} to={x==="WORK"?"/work":`/${x.toLowerCase()}`} onClick={()=>setOpen(false)} data-testid={`nav-${x.toLowerCase()}-link`}>{x}</Link>)}<Link className="nav-cta" to="/contact" onClick={()=>setOpen(false)} data-testid="nav-book-link">BOOK FOR AN EVENT <ArrowUpRight size={15}/></Link></nav><button className="menu-button" onClick={()=>setOpen(!open)} aria-label="Toggle menu" data-testid="mobile-menu-button">{open?<X/>:<Menu/>}</button></header> }
 function Placeholder({label="EDITABLE MEDIA PLACEHOLDER"}){ return <span className="placeholder-label" data-testid="media-placeholder-label">{label}</span> }
 function SectionIntro({eyebrow,title,children}){ return <div className="section-intro"><p className="eyebrow">{eyebrow}</p><h2>{title}</h2>{children&&<p className="intro-copy">{children}</p>}</div> }
