@@ -248,7 +248,6 @@ export function ScrollTop() {
 export function Layout({ children }) {
   return (
     <div className="min-h-screen bg-[#080808] text-[#F4F4F5]">
-      <Grain />
       <Header />
       <main>{children}</main>
       <Footer />
