@@ -208,6 +208,17 @@ export const services = [
   },
 ];
 
+const pickVideo = (mp4, webm) => {
+  if (typeof document === "undefined") return mp4;
+  const v = document.createElement("video");
+  return v.canPlayType('video/mp4; codecs="avc1.640028"') ? mp4 : webm;
+};
+
+export const VIDEO = {
+  hero: pickVideo("/media/hero-loop.mp4", "/media/hero-loop.webm"),
+  showreel: pickVideo("/media/showreel.mp4", "/media/showreel.webm"),
+};
+
 export const contact = {
   instagram: "https://instagram.com/filmsbypaddy",
   email: "hello@filmsbypaddy.com",

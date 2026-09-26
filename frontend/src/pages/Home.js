@@ -5,7 +5,7 @@ import { ArrowUpRight, Maximize, Play, Volume2, VolumeX } from "lucide-react";
 import { EditorialMarquee, Eyebrow, Layout, PlaceholderTag, TextLink } from "@/components/Layout";
 import { ImageReveal, MaskedLine, ParallaxImage, Reveal, ease } from "@/components/motion";
 import ArtistIndex from "@/components/ArtistIndex";
-import { IMG, contact, credits } from "@/data/site";
+import { IMG, VIDEO, contact, credits } from "@/data/site";
 
 function Hero() {
   const ref = useRef(null);
@@ -17,10 +17,19 @@ function Hero() {
   return (
     <section ref={ref} className="relative flex h-[100svh] items-end overflow-hidden" data-testid="home-hero">
       <motion.div style={{ y, scale }} className="absolute inset-0 will-change-transform">
-        <img src={IMG.hero} alt="Artist silhouetted against warm cinematic stage light" className="h-full w-full object-cover" />
+        <video
+          src={VIDEO.hero}
+          poster={IMG.hero}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="h-full w-full object-cover"
+          data-testid="hero-video"
+        />
       </motion.div>
       <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-[#080808]/50" />
-      <PlaceholderTag label="Hero video / image placeholder — add showreel loop" className="hidden md:block top-28 right-10" />
+      <PlaceholderTag label="Stock placeholder footage — replace /public/media/hero-loop.mp4 with your reel" className="hidden md:block top-28 right-10" />
 
       <motion.div style={{ opacity: fade }} className="relative z-10 w-full px-5 pb-24 md:px-10 md:pb-16">
         <h1 className="font-display uppercase leading-[0.82]">
@@ -165,7 +174,30 @@ function ArtistsSection({ projects }) {
 function Showreel() {
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(true);
+  const [time, setTime] = useState(0);
+  const [duration, setDuration] = useState(0);
   const frameRef = useRef(null);
+  const videoRef = useRef(null);
+
+  const fmt = (s) => {
+    if (!isFinite(s)) return "00:00";
+    return `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
+  };
+
+  const togglePlay = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (v.paused) {
+      v.play().catch(() => {});
+    } else {
+      v.pause();
+    }
+  };
+
+  const toggleMute = () => {
+    const v = videoRef.current;
+    if (v) v.muted = !v.muted;
+  };
 
   const toggleFullscreen = () => {
     const el = frameRef.current;
@@ -177,19 +209,36 @@ function Showreel() {
     }
   };
 
+  const seek = (e) => {
+    const v = videoRef.current;
+    if (!v || !duration) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    v.currentTime = ((e.clientX - rect.left) / rect.width) * duration;
+  };
+
   return (
     <section className="py-10 md:py-16">
       <div ref={frameRef} className="relative h-[92svh] w-full overflow-hidden bg-[#080808]" data-testid="showreel-player">
-        <img
-          src={IMG.showreelPoster}
-          alt="Showreel poster — lasers over a dense concert crowd"
-          loading="lazy"
-          className={`h-full w-full object-cover transition-[transform,filter] duration-700 ${playing ? "scale-105 saturate-100" : "saturate-[0.7]"}`}
+        <video
+          ref={videoRef}
+          src={VIDEO.showreel}
+          poster={IMG.showreelPoster}
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          onPlay={() => setPlaying(true)}
+          onPause={() => setPlaying(false)}
+          onVolumeChange={(e) => setMuted(e.target.muted)}
+          onTimeUpdate={(e) => setTime(e.currentTarget.currentTime)}
+          onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
+          onClick={togglePlay}
+          className="h-full w-full cursor-pointer object-cover"
+          data-testid="showreel-video"
         />
-        <div className="absolute inset-0 bg-[#080808]/40" />
-        <PlaceholderTag label={playing ? "Reel playback placeholder — add video file" : "Showreel placeholder — add video file"} className="top-6 right-5 md:right-10" />
+        <div className={`pointer-events-none absolute inset-0 bg-[#080808]/40 transition-opacity duration-700 ${playing ? "opacity-0" : "opacity-100"}`} />
 
-        <div className="absolute left-5 top-16 md:left-10 md:top-24">
+        <div className={`pointer-events-none absolute left-5 top-16 transition-opacity duration-700 md:left-10 md:top-24 ${playing ? "opacity-0" : "opacity-100"}`}>
           <Eyebrow className="mb-5 !text-[#F4F4F5]/70">03 — The showreel</Eyebrow>
           <Reveal>
             <h2 className="font-display text-[14vw] uppercase leading-[0.84] md:text-[8.5vw]">
@@ -198,29 +247,44 @@ function Showreel() {
           </Reveal>
         </div>
 
-        <button
-          onClick={() => setPlaying(!playing)}
-          data-testid="showreel-play-button"
-          aria-label={playing ? "Pause showreel" : "Play showreel"}
-          className="group absolute left-1/2 top-1/2 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/50 bg-black/25 backdrop-blur-sm transition-colors duration-300 hover:border-[#FF5500] md:h-32 md:w-32"
-        >
-          {playing
-            ? <span className="h-8 w-8 border-x-[6px] border-[#F4F4F5] transition-colors group-hover:border-[#FF5500]" />
-            : <Play size={34} className="ml-1.5 text-[#F4F4F5] transition-colors group-hover:text-[#FF5500]" fill="currentColor" />}
-        </button>
+        {!playing && (
+          <button
+            onClick={togglePlay}
+            data-testid="showreel-play-button"
+            aria-label="Play showreel"
+            className="group absolute left-1/2 top-1/2 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/50 bg-black/25 backdrop-blur-sm transition-colors duration-300 hover:border-[#FF5500] md:h-32 md:w-32"
+          >
+            <Play size={34} className="ml-1.5 text-[#F4F4F5] transition-colors group-hover:text-[#FF5500]" fill="currentColor" />
+          </button>
+        )}
 
-        <div className="absolute inset-x-0 bottom-0 flex items-end justify-between px-5 pb-6 md:px-10 md:pb-8">
-          <p className="max-w-xs text-[10px] uppercase leading-relaxed tracking-[0.3em] text-[#F4F4F5]/70">
-            From soundcheck to encore — what it felt like to be there
-          </p>
-          <div className="flex items-center gap-5">
-            <span className="hidden text-[10px] uppercase tracking-[0.3em] text-white/70 sm:block">{playing ? "00:17" : "00:00"} — 01:42</span>
-            <button onClick={() => setMuted(!muted)} data-testid="showreel-mute-button" aria-label="Toggle mute" className="text-white/70 transition-colors hover:text-[#FF5500]">
-              {muted ? <VolumeX size={18} /> : <Volume2 size={18} />}
-            </button>
-            <button onClick={toggleFullscreen} data-testid="showreel-fullscreen-button" aria-label="Fullscreen" className="text-white/70 transition-colors hover:text-[#FF5500]">
-              <Maximize size={18} />
-            </button>
+        <div className="absolute inset-x-0 bottom-0 px-5 pb-6 md:px-10 md:pb-8">
+          <div className="flex items-end justify-between pb-4">
+            <p className={`max-w-xs text-[10px] uppercase leading-relaxed tracking-[0.3em] text-[#F4F4F5]/70 transition-opacity duration-700 ${playing ? "opacity-0" : "opacity-100"}`}>
+              From soundcheck to encore — what it felt like to be there
+            </p>
+            <div className="flex items-center gap-5">
+              <span className="hidden text-[10px] uppercase tracking-[0.3em] text-white/70 sm:block" data-testid="showreel-timecode">
+                {fmt(time)} — {fmt(duration)}
+              </span>
+              <button onClick={toggleMute} data-testid="showreel-mute-button" aria-label="Toggle mute" className="text-white/70 transition-colors hover:text-[#FF5500]">
+                {muted ? <VolumeX size={18} /> : <Volume2 size={18} />}
+              </button>
+              <button onClick={toggleFullscreen} data-testid="showreel-fullscreen-button" aria-label="Fullscreen" className="text-white/70 transition-colors hover:text-[#FF5500]">
+                <Maximize size={18} />
+              </button>
+            </div>
+          </div>
+          <div
+            className="group/bar relative h-[3px] w-full cursor-pointer bg-white/15"
+            onClick={seek}
+            data-testid="showreel-progress-bar"
+            role="progressbar"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={Math.round(duration ? (time / duration) * 100 : 0)}
+          >
+            <div className="absolute inset-y-0 left-0 bg-[#FF5500]" style={{ width: `${duration ? (time / duration) * 100 : 0}%` }} />
           </div>
         </div>
       </div>
