@@ -17,7 +17,7 @@ function Hero({ p }) {
         <img src={p.heroImage} alt={`${p.artist} live at ${p.event} — placeholder media`} className="h-full w-full scale-110 object-cover" />
       </motion.div>
       <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-[#080808]/20 to-[#080808]/40" />
-      <PlaceholderTag className="top-24 right-5 md:top-28 md:right-10" />
+      <PlaceholderTag className="hidden md:block top-28 right-10" />
       <div className="relative z-10 w-full px-5 pb-16 md:px-10">
         <MaskedLine delay={0.15}>
           <span className="text-[10px] font-medium uppercase tracking-[0.4em] text-[#F4F4F5]/80">

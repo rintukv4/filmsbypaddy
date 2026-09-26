@@ -1,56 +1,58 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowUpRight, Maximize, Play, Volume2, VolumeX } from "lucide-react";
-import { EditorialMarquee, Eyebrow, Layout, PlaceholderTag, SolidButton, TextLink } from "@/components/Layout";
+import { EditorialMarquee, Eyebrow, Layout, PlaceholderTag, TextLink } from "@/components/Layout";
 import { ImageReveal, MaskedLine, ParallaxImage, Reveal, ease } from "@/components/motion";
+import ArtistIndex from "@/components/ArtistIndex";
 import { IMG, contact, credits } from "@/data/site";
 
 function Hero() {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "22%"]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
-  const fade = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "24%"]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
+  const fade = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
   return (
     <section ref={ref} className="relative flex h-[100svh] items-end overflow-hidden" data-testid="home-hero">
       <motion.div style={{ y, scale }} className="absolute inset-0 will-change-transform">
         <img src={IMG.hero} alt="Artist silhouetted against warm cinematic stage light" className="h-full w-full object-cover" />
       </motion.div>
-      <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-[#080808]/25 to-[#080808]/45" />
-      <PlaceholderTag label="Hero video / image placeholder — add showreel loop" className="top-24 right-5 md:top-28 md:right-10" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-[#080808]/50" />
+      <PlaceholderTag label="Hero video / image placeholder — add showreel loop" className="hidden md:block top-28 right-10" />
 
-      <motion.div style={{ opacity: fade }} className="relative z-10 w-full px-5 pb-28 md:px-10 md:pb-24">
-        <MaskedLine delay={0.15}>
-          <span className="text-[10px] font-medium uppercase tracking-[0.4em] text-[#F4F4F5]/80">
-            Concert photography · Cinematography · Festival content
-          </span>
-        </MaskedLine>
-        <h1 className="mt-6 font-display uppercase leading-[0.85]">
-          <MaskedLine delay={0.3}><span className="block text-[15vw] md:text-[11vw]">Live music.</span></MaskedLine>
-          <MaskedLine delay={0.45}><span className="text-outline block text-[15vw] md:text-[11vw]">Raw energy.</span></MaskedLine>
-          <MaskedLine delay={0.6}><span className="block text-[15vw] md:text-[11vw]">Cinematic stories.</span></MaskedLine>
+      <motion.div style={{ opacity: fade }} className="relative z-10 w-full px-5 pb-24 md:px-10 md:pb-16">
+        <h1 className="font-display uppercase leading-[0.82]">
+          <MaskedLine delay={0.25}><span className="block text-[17vw] md:text-[12.5vw]">Live music.</span></MaskedLine>
+          <MaskedLine delay={0.42}><span className="text-outline block text-[17vw] md:text-[12.5vw]">Raw energy.</span></MaskedLine>
+          <MaskedLine delay={0.59}><span className="block text-[17vw] md:text-[12.5vw]">Cinematic stories.</span></MaskedLine>
         </h1>
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease, delay: 1 }}
-          className="mt-10 flex flex-wrap items-center gap-8"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 1.1 }}
+          className="mt-10 flex items-end justify-between gap-6"
         >
-          <SolidButton to="/work" testid="hero-work-button">Explore the work</SolidButton>
-          <TextLink to="/contact" testid="hero-book-link">Book for an event</TextLink>
+          <div>
+            <p className="mb-5 text-[9px] font-medium uppercase tracking-[0.4em] text-[#F4F4F5]/70">
+              Concert photography · Cinematography · Festival content
+            </p>
+            <TextLink to="/work" testid="hero-work-button">Explore the work</TextLink>
+            <span className="mx-5 text-[#A1A1AA]/40">/</span>
+            <TextLink to="/contact" testid="hero-book-link">Book for an event</TextLink>
+          </div>
         </motion.div>
       </motion.div>
 
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.4, duration: 1 }}
-        className="absolute inset-x-0 bottom-0 z-10 flex items-center justify-between px-5 pb-6 md:px-10"
+        transition={{ delay: 1.5, duration: 1 }}
+        className="absolute inset-x-0 bottom-0 z-10 flex items-center justify-between px-5 pb-5 md:px-10"
       >
-        <span className="text-[9px] uppercase tracking-[0.35em] text-[#F4F4F5]/60">Based in India · Available worldwide</span>
-        <span className="hidden items-center gap-3 text-[9px] uppercase tracking-[0.35em] text-[#F4F4F5]/60 md:flex" data-testid="scroll-indicator">
+        <span className="text-[9px] uppercase tracking-[0.35em] text-[#F4F4F5]/55">Based in India · Available worldwide</span>
+        <span className="hidden items-center gap-3 text-[9px] uppercase tracking-[0.35em] text-[#F4F4F5]/55 md:flex" data-testid="scroll-indicator">
           Scroll
           <span className="relative h-10 w-px overflow-hidden bg-white/20">
             <motion.span
@@ -67,17 +69,15 @@ function Hero() {
 
 function Manifesto() {
   return (
-    <section className="px-5 py-24 md:px-10 md:py-40">
+    <section className="px-5 py-28 md:px-10 md:py-44">
       <Eyebrow className="mb-10">01 — The moment</Eyebrow>
       <Reveal>
-        <h2 className="max-w-6xl font-display text-[13vw] uppercase leading-[0.88] md:text-[7.5vw]">
-          The moment<br />
-          <span className="text-outline">between the stage</span><br />
-          and the crowd.
+        <h2 className="max-w-7xl font-display text-[12.5vw] uppercase leading-[0.86] md:text-[7.2vw]">
+          The moment <span className="text-outline">between the stage</span> and the crowd.
         </h2>
       </Reveal>
-      <Reveal delay={0.15} className="mt-12 flex md:justify-end">
-        <p className="max-w-md text-base leading-relaxed text-[#A1A1AA] md:text-lg">
+      <Reveal delay={0.15} className="mt-14 flex md:justify-end">
+        <p className="max-w-md text-base leading-relaxed text-[#A1A1AA]">
           I capture the energy of live music through photography and motion — from the artist's first step onto the stage to the final moment of the night.
         </p>
       </Reveal>
@@ -85,55 +85,79 @@ function Manifesto() {
   );
 }
 
+const WORK_LAYOUTS = [
+  { wrap: "", img: "md:col-start-1 md:col-span-8 aspect-[16/10]", txt: "md:col-start-8 md:col-span-5 md:-ml-32 self-end" },
+  { wrap: "md:-mt-40", img: "md:col-start-8 md:col-span-5 aspect-[3/4]", txt: "md:col-start-1 md:col-span-6 md:-mr-28 self-center md:text-right md:justify-self-end" },
+  { wrap: "md:-mt-24", img: "md:col-start-2 md:col-span-7 aspect-[4/3]", txt: "md:col-start-9 md:col-span-4 md:-ml-24 self-end" },
+];
+
 function SelectedWork({ projects }) {
   const featured = projects.filter((p) => p.featured);
   return (
-    <section className="px-5 py-24 md:px-10 md:py-36" data-testid="selected-work-section">
-      <div className="mb-16 flex flex-wrap items-end justify-between gap-6 md:mb-24">
-        <div>
-          <Eyebrow className="mb-6">02 — The archive</Eyebrow>
-          <Reveal><h2 className="font-display text-[14vw] uppercase leading-[0.85] md:text-[8vw]">Selected work</h2></Reveal>
-        </div>
+    <section className="py-28 md:py-40" data-testid="selected-work-section">
+      <div className="mb-20 flex flex-wrap items-end justify-between gap-6 px-5 md:mb-32 md:px-10">
+        <Reveal><h2 className="font-display text-[15vw] uppercase leading-[0.82] md:text-[9vw]">Selected<br /><span className="text-outline">work</span></h2></Reveal>
         <TextLink to="/work" testid="selected-work-link">View all work</TextLink>
       </div>
-      <p className="mb-20 max-w-md text-sm leading-relaxed text-[#A1A1AA]">
-        A collection of concerts, festivals and live experiences captured through stills and motion.
-      </p>
-      <div className="flex flex-col gap-24 md:gap-40">
-        {featured.map((p, i) => (
-          <Reveal key={p.slug} y={60}>
-            <Link to={`/work/${p.slug}`} data-testid={`project-card-${p.slug}`} className="group block">
-              <div className="grid grid-cols-12 items-end gap-y-0">
-                <div className={`relative col-span-12 row-start-1 ${i % 2 ? "md:col-start-5 md:col-span-8" : "md:col-start-1 md:col-span-8"}`}>
-                  <div className="relative aspect-[4/3] overflow-hidden md:aspect-[16/10]">
-                    <img
-                      src={p.heroImage}
-                      alt={`${p.artist} live at ${p.event} — placeholder media`}
-                      loading="lazy"
-                      className="h-full w-full object-cover saturate-[0.8] transition-[transform,filter] duration-700 ease-out group-hover:scale-[1.045] group-hover:saturate-100"
-                    />
-                    <div className="absolute inset-0 bg-[#080808]/10 transition-opacity duration-500 group-hover:opacity-0" />
+
+      <div className="flex flex-col gap-28 px-5 md:gap-0 md:px-0">
+        {featured.map((p, i) => {
+          const L = WORK_LAYOUTS[i % WORK_LAYOUTS.length];
+          return (
+            <Reveal key={p.slug} y={70} className={L.wrap}>
+              <Link to={`/work/${p.slug}`} data-testid={`project-card-${p.slug}`} className="group block md:px-10">
+                <div className="relative grid grid-cols-12 md:items-end">
+                  <span aria-hidden="true" className="text-outline-thin pointer-events-none absolute -top-14 left-0 z-0 hidden font-display text-[11rem] leading-none md:block">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div className={`relative z-10 col-span-12 row-start-1 ${L.img}`}>
+                    <div className="relative h-full w-full overflow-hidden">
+                      <img
+                        src={p.heroImage}
+                        alt={`${p.artist} live at ${p.event} — placeholder media`}
+                        loading="lazy"
+                        className="h-full w-full object-cover saturate-[0.8] transition-[transform,filter] duration-700 ease-out group-hover:scale-[1.05] group-hover:saturate-100"
+                      />
+                      <div className="absolute inset-0 bg-[#080808]/10 transition-opacity duration-500 group-hover:opacity-0" />
+                    </div>
+                  </div>
+                  <div className={`relative z-20 col-span-11 row-start-1 -mt-20 self-end md:mt-0 ${L.txt} ${i % 3 === 1 ? "col-start-1" : "col-start-2"}`}>
+                    <div className="bg-[#080808]/60 p-5 backdrop-blur-sm md:bg-transparent md:p-0 md:backdrop-blur-0">
+                      <Eyebrow className="mb-3">{p.event} — {p.city} — {p.year}</Eyebrow>
+                      <h3 className="font-display text-6xl uppercase leading-[0.88] transition-colors duration-300 group-hover:text-[#FF5500] md:text-8xl">
+                        {p.title.split(" / ").map((line) => <span key={line} className="block">{line}</span>)}
+                      </h3>
+                      <p className="mt-4 text-[10px] uppercase tracking-[0.25em] text-[#A1A1AA]">{p.artist}</p>
+                      <span className={`mt-5 inline-flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.3em] text-[#FF5500] ${i % 3 === 1 ? "md:flex-row-reverse" : ""}`}>
+                        View project
+                        <ArrowUpRight size={13} className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                      </span>
+                    </div>
                   </div>
                 </div>
-                <div className={`relative z-10 col-span-11 row-start-1 self-end ${i % 2 ? "md:col-start-1 md:col-span-5 md:-mr-24" : "col-start-2 md:col-start-8 md:col-span-5 md:-ml-24"} -mt-20 md:mt-0`}>
-                  <div className="bg-[#080808]/70 p-6 backdrop-blur-sm md:bg-transparent md:p-0 md:backdrop-blur-0">
-                    <Eyebrow className="mb-4">{String(i + 1).padStart(2, "0")} — {p.year}</Eyebrow>
-                    <h3 className="font-display text-5xl uppercase leading-[0.9] transition-colors duration-300 group-hover:text-[#FF5500] md:text-7xl">
-                      {p.title.split(" / ").map((line) => <span key={line} className="block">{line}</span>)}
-                    </h3>
-                    <p className="mt-4 text-[11px] uppercase tracking-[0.25em] text-[#A1A1AA]">{p.artist}</p>
-                    <p className="mt-1 text-[11px] uppercase tracking-[0.25em] text-[#A1A1AA]/70">{p.services}</p>
-                    <span className="mt-6 inline-flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.3em] text-[#FF5500]">
-                      View project
-                      <ArrowUpRight size={13} className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </Reveal>
-        ))}
+              </Link>
+            </Reveal>
+          );
+        })}
       </div>
+    </section>
+  );
+}
+
+function ArtistsSection({ projects }) {
+  const artists = useMemo(() => {
+    const map = new Map();
+    projects.forEach((p) => { if (!map.has(p.artist)) map.set(p.artist, { name: p.artist, project: p }); });
+    return [...map.values()];
+  }, [projects]);
+
+  return (
+    <section className="px-5 py-28 md:px-10 md:py-40" data-testid="home-artists-section">
+      <div className="mb-14 flex flex-wrap items-end justify-between gap-6 md:mb-20">
+        <Reveal><h2 className="font-display text-[15vw] uppercase leading-[0.82] md:text-[9vw]">The<br /><span className="text-outline">artists</span></h2></Reveal>
+        <TextLink to="/artists" testid="home-artists-link">Full directory</TextLink>
+      </div>
+      <ArtistIndex artists={artists} testidPrefix="home-artists-row" />
     </section>
   );
 }
@@ -154,52 +178,51 @@ function Showreel() {
   };
 
   return (
-    <section className="py-24 md:py-36">
-      <div className="mb-12 flex flex-wrap items-end justify-between gap-8 px-5 md:px-10">
-        <div>
-          <Eyebrow className="mb-6">03 — The showreel</Eyebrow>
-          <Reveal>
-            <h2 className="font-display text-[13vw] uppercase leading-[0.85] md:text-[7vw]">
-              Live music<br /><span className="text-outline">through my lens.</span>
-            </h2>
-          </Reveal>
-          <p className="mt-8 max-w-md text-sm leading-relaxed text-[#A1A1AA]">
-            From soundcheck to encore, every frame is about capturing what it felt like to be there.
-          </p>
-        </div>
-        <TextLink to="/work" testid="showreel-full-link">Watch the full reel</TextLink>
-      </div>
-
-      <div ref={frameRef} className="relative aspect-[4/5] w-full overflow-hidden bg-[#080808] sm:aspect-[16/9] md:aspect-[21/9]" data-testid="showreel-player">
+    <section className="py-10 md:py-16">
+      <div ref={frameRef} className="relative h-[92svh] w-full overflow-hidden bg-[#080808]" data-testid="showreel-player">
         <img
           src={IMG.showreelPoster}
           alt="Showreel poster — lasers over a dense concert crowd"
           loading="lazy"
-          className={`h-full w-full object-cover transition-all duration-700 ${playing ? "scale-105 saturate-100" : "saturate-[0.75]"}`}
+          className={`h-full w-full object-cover transition-[transform,filter] duration-700 ${playing ? "scale-105 saturate-100" : "saturate-[0.7]"}`}
         />
-        <div className="absolute inset-0 bg-[#080808]/35" />
-        <PlaceholderTag label={playing ? "Reel playback placeholder — add video file" : "Showreel poster — add video file"} />
+        <div className="absolute inset-0 bg-[#080808]/40" />
+        <PlaceholderTag label={playing ? "Reel playback placeholder — add video file" : "Showreel placeholder — add video file"} className="top-6 right-5 md:right-10" />
+
+        <div className="absolute left-5 top-16 md:left-10 md:top-24">
+          <Eyebrow className="mb-5 !text-[#F4F4F5]/70">03 — The showreel</Eyebrow>
+          <Reveal>
+            <h2 className="font-display text-[14vw] uppercase leading-[0.84] md:text-[8.5vw]">
+              Live music<br /><span className="text-outline">through my lens.</span>
+            </h2>
+          </Reveal>
+        </div>
 
         <button
           onClick={() => setPlaying(!playing)}
           data-testid="showreel-play-button"
           aria-label={playing ? "Pause showreel" : "Play showreel"}
-          className="group absolute left-1/2 top-1/2 flex h-20 w-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-black/30 backdrop-blur-sm transition-colors duration-300 hover:border-[#FF5500] md:h-24 md:w-24"
+          className="group absolute left-1/2 top-1/2 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/50 bg-black/25 backdrop-blur-sm transition-colors duration-300 hover:border-[#FF5500] md:h-32 md:w-32"
         >
           {playing
-            ? <span className="h-6 w-6 border-x-4 border-[#F4F4F5] transition-colors group-hover:border-[#FF5500]" />
-            : <Play size={26} className="ml-1 text-[#F4F4F5] transition-colors group-hover:text-[#FF5500]" fill="currentColor" />}
+            ? <span className="h-8 w-8 border-x-[6px] border-[#F4F4F5] transition-colors group-hover:border-[#FF5500]" />
+            : <Play size={34} className="ml-1.5 text-[#F4F4F5] transition-colors group-hover:text-[#FF5500]" fill="currentColor" />}
         </button>
 
-        <div className="absolute bottom-5 left-5 flex items-center gap-4 md:bottom-8 md:left-10">
-          <button onClick={() => setMuted(!muted)} data-testid="showreel-mute-button" aria-label="Toggle mute" className="text-white/70 transition-colors hover:text-[#FF5500]">
-            {muted ? <VolumeX size={18} /> : <Volume2 size={18} />}
-          </button>
-          <span className="text-[10px] uppercase tracking-[0.3em] text-white/70">{playing ? "00:17" : "00:00"} — 01:42</span>
+        <div className="absolute inset-x-0 bottom-0 flex items-end justify-between px-5 pb-6 md:px-10 md:pb-8">
+          <p className="max-w-xs text-[10px] uppercase leading-relaxed tracking-[0.3em] text-[#F4F4F5]/70">
+            From soundcheck to encore — what it felt like to be there
+          </p>
+          <div className="flex items-center gap-5">
+            <span className="hidden text-[10px] uppercase tracking-[0.3em] text-white/70 sm:block">{playing ? "00:17" : "00:00"} — 01:42</span>
+            <button onClick={() => setMuted(!muted)} data-testid="showreel-mute-button" aria-label="Toggle mute" className="text-white/70 transition-colors hover:text-[#FF5500]">
+              {muted ? <VolumeX size={18} /> : <Volume2 size={18} />}
+            </button>
+            <button onClick={toggleFullscreen} data-testid="showreel-fullscreen-button" aria-label="Fullscreen" className="text-white/70 transition-colors hover:text-[#FF5500]">
+              <Maximize size={18} />
+            </button>
+          </div>
         </div>
-        <button onClick={toggleFullscreen} data-testid="showreel-fullscreen-button" aria-label="Fullscreen" className="absolute bottom-5 right-5 text-white/70 transition-colors hover:text-[#FF5500] md:bottom-8 md:right-10">
-          <Maximize size={18} />
-        </button>
       </div>
     </section>
   );
@@ -207,7 +230,7 @@ function Showreel() {
 
 function Credits() {
   return (
-    <section className="px-5 py-24 md:px-10 md:py-36">
+    <section className="px-5 py-28 md:px-10 md:py-40">
       <Eyebrow className="mb-6">04 — Selected live credits</Eyebrow>
       <Reveal><h2 className="mb-16 font-display text-[13vw] uppercase leading-[0.85] md:text-[7vw]">In the room.</h2></Reveal>
       <div className="border-t border-white/10">
@@ -229,21 +252,18 @@ function Credits() {
 
 function BehindTheFrame() {
   return (
-    <section className="px-5 py-24 md:px-10 md:py-36" data-testid="bts-section">
+    <section className="px-5 py-28 md:px-10 md:py-40" data-testid="bts-section">
       <div className="grid gap-12 md:grid-cols-12 md:gap-8">
         <div className="md:col-span-5">
           <Eyebrow className="mb-6">05 — Behind the frame</Eyebrow>
           <Reveal>
-            <h2 className="font-display text-[13vw] uppercase leading-[0.88] md:text-[5.5vw]">
+            <h2 className="font-display text-[12vw] uppercase leading-[0.88] md:text-[5.5vw]">
               The final frame<br />
               <span className="text-outline">is only half</span><br />
               the story.
             </h2>
           </Reveal>
           <Reveal delay={0.15}>
-            <p className="mt-10 max-w-sm text-sm leading-relaxed text-[#A1A1AA]">
-              Rigs, gimbals, stage access, soundchecks and long edits — the work behind the work.
-            </p>
             <div className="mt-10"><TextLink to="/about" testid="bts-link">See more BTS</TextLink></div>
           </Reveal>
         </div>
@@ -259,12 +279,9 @@ function BehindTheFrame() {
 
 function InstagramSection() {
   return (
-    <section className="py-24 md:py-36">
+    <section className="py-28 md:py-40">
       <div className="mb-14 flex flex-wrap items-end justify-between gap-6 px-5 md:px-10">
-        <div>
-          <Eyebrow className="mb-6">06 — Follow the journey</Eyebrow>
-          <Reveal><h2 className="font-display text-[13vw] uppercase leading-[0.85] md:text-[7vw]">@FilmsByPaddy</h2></Reveal>
-        </div>
+        <Reveal><h2 className="font-display text-[13vw] uppercase leading-[0.85] md:text-[7vw]">@FilmsByPaddy</h2></Reveal>
         <TextLink to={contact.instagram} external testid="home-instagram-link">Follow on Instagram</TextLink>
       </div>
       <div className="grid grid-cols-2 gap-1 md:grid-cols-4">
@@ -297,11 +314,12 @@ export default function Home({ projects }) {
     <Layout>
       <Hero />
       <Manifesto />
-      <ParallaxImage src={IMG.texture} alt="Spotlight beam cutting through stage haze" className="h-[55vh] md:h-[80vh]" />
       <SelectedWork projects={projects} />
       <EditorialMarquee />
+      <ArtistsSection projects={projects} />
       <Showreel />
       <Credits />
+      <ParallaxImage src={IMG.texture} alt="Spotlight beam cutting through stage haze" className="h-[50vh] md:h-[75vh]" />
       <BehindTheFrame />
       <InstagramSection />
     </Layout>
