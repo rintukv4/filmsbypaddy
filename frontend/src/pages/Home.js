@@ -1,6 +1,6 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { ArrowUpRight, Maximize, Play, Volume2, VolumeX } from "lucide-react";
 import { EditorialMarquee, Eyebrow, Layout, PlaceholderTag, TextLink } from "@/components/Layout";
 import { ImageReveal, MaskedLine, ParallaxImage, Reveal, ease } from "@/components/motion";
@@ -177,6 +177,17 @@ function Showreel() {
   const [duration, setDuration] = useState(0);
   const frameRef = useRef(null);
   const videoRef = useRef(null);
+  const inView = useInView(frameRef, { amount: 0.45 });
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (inView) {
+      v.play().catch(() => {});
+    } else {
+      v.pause();
+    }
+  }, [inView]);
 
   const fmt = (s) => {
     if (!isFinite(s)) return "00:00";
