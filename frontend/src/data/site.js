@@ -215,7 +215,7 @@ const pickVideo = (mp4, webm) => {
 };
 
 export const instagramPosts = [
-  { url: "https://www.instagram.com/filmxaskn/p/DQ_iBWqgVc8/", img: u("photo-1629327896333-7ecec1515ae5") },
+  { url: "https://www.instagram.com/filmxaskn/p/DQ_iBWqgVc8/", img: "/media/ig-post-1.jpg" },
   { url: "https://www.instagram.com/filmsbypaddy/p/DUwxL1YEwB-/", img: u("photo-1567663711269-0351025d18a8") },
   { url: "https://www.instagram.com/filmsbypaddy/p/DUzZPAYCCaO/", img: u("photo-1453090927415-5f45085b65c0") },
   { url: "https://www.instagram.com/filmsbypaddy/p/DWd3PRwEzcm/", img: u("photo-1470225620780-dba8ba36b745") },
