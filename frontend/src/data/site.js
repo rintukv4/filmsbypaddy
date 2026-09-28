@@ -220,10 +220,9 @@ export const instagramPosts = [
   { url: "https://www.instagram.com/filmsbypaddy/p/DUzZPAYCCaO/", img: "/media/ig-post-3.webp" },
   { url: "https://www.instagram.com/filmsbypaddy/p/DWd3PRwEzcm/", img: "/media/ig-post-4.webp" },
   { url: "https://www.instagram.com/filmsbypaddy/p/DWvUFR8gJTN/", img: "/media/ig-post-5.webp" },
-  { url: "https://www.instagram.com/filmsbypaddy/p/DYhNGNpk4g4/", img: u("photo-1507676184212-d03ab07a01bf") },
-  { url: "https://www.instagram.com/filmsbypaddy/p/DYj90U5yI-i/", img: u("photo-1615754890634-69ac8bca7189") },
-  { url: "https://www.instagram.com/filmsbypaddy/p/C3AnvjUxA7r/", img: u("photo-1459749411175-04bf5292ceea") },
-  { url: "https://www.instagram.com/filmsbypaddy/p/C2wVGplRuWm/", img: u("photo-1514525253161-7a46d19cd819") },
+  { url: "https://www.instagram.com/filmsbypaddy/p/DYhNGNpk4g4/", img: "/media/ig-post-6.jpg" },
+  { url: "https://www.instagram.com/filmsbypaddy/p/C3AnvjUxA7r/", img: "/media/ig-post-7.jpg" },
+  { url: "https://www.instagram.com/filmsbypaddy/p/C2wVGplRuWm/", img: "/media/ig-post-8.jpg" },
 ];
 
 export const VIDEO = {

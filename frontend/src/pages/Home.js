@@ -358,7 +358,7 @@ function InstagramSection() {
         <Reveal><h2 className="font-display text-[13vw] uppercase leading-[0.85] md:text-[7vw]">@FilmsByPaddy</h2></Reveal>
         <TextLink to={contact.instagram} external testid="home-instagram-link">Follow on Instagram</TextLink>
       </div>
-      <div className="grid grid-cols-2 gap-1 md:grid-cols-3">
+      <div className="grid grid-cols-2 gap-1 md:grid-cols-4">
         {instagramPosts.map((post, i) => (
           <a
             key={post.url}
