@@ -214,6 +214,18 @@ const pickVideo = (mp4, webm) => {
   return v.canPlayType('video/mp4; codecs="avc1.640028"') ? mp4 : webm;
 };
 
+export const instagramPosts = [
+  { url: "https://www.instagram.com/filmxaskn/p/DQ_iBWqgVc8/", img: u("photo-1629327896333-7ecec1515ae5") },
+  { url: "https://www.instagram.com/filmsbypaddy/p/DUwxL1YEwB-/", img: u("photo-1567663711269-0351025d18a8") },
+  { url: "https://www.instagram.com/filmsbypaddy/p/DUzZPAYCCaO/", img: u("photo-1453090927415-5f45085b65c0") },
+  { url: "https://www.instagram.com/filmsbypaddy/p/DWd3PRwEzcm/", img: u("photo-1470225620780-dba8ba36b745") },
+  { url: "https://www.instagram.com/filmsbypaddy/p/DWvUFR8gJTN/", img: u("photo-1595971294624-80bcf0d7eb24") },
+  { url: "https://www.instagram.com/filmsbypaddy/p/DYhNGNpk4g4/", img: u("photo-1507676184212-d03ab07a01bf") },
+  { url: "https://www.instagram.com/filmsbypaddy/p/DYj90U5yI-i/", img: u("photo-1615754890634-69ac8bca7189") },
+  { url: "https://www.instagram.com/filmsbypaddy/p/C3AnvjUxA7r/", img: u("photo-1459749411175-04bf5292ceea") },
+  { url: "https://www.instagram.com/filmsbypaddy/p/C2wVGplRuWm/", img: u("photo-1514525253161-7a46d19cd819") },
+];
+
 export const VIDEO = {
   hero: pickVideo("/media/hero-loop.mp4", "/media/hero-loop.webm"),
   showreel: pickVideo("/media/showreel.mp4", "/media/showreel.webm"),

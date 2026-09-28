@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import { ArrowUpRight, Maximize, Play, Volume2, VolumeX } from "lucide-react";
+import { ArrowUpRight, Instagram, Maximize, Play, Volume2, VolumeX } from "lucide-react";
 import { EditorialMarquee, Eyebrow, Layout, PlaceholderTag, TextLink } from "@/components/Layout";
 import { ImageReveal, MaskedLine, ParallaxImage, Reveal, ease } from "@/components/motion";
 import ArtistIndex from "@/components/ArtistIndex";
-import { IMG, VIDEO, contact, credits } from "@/data/site";
+import { IMG, VIDEO, contact, credits, instagramPosts } from "@/data/site";
 
 function Hero() {
   const ref = useRef(null);
@@ -358,23 +358,29 @@ function InstagramSection() {
         <Reveal><h2 className="font-display text-[13vw] uppercase leading-[0.85] md:text-[7vw]">@FilmsByPaddy</h2></Reveal>
         <TextLink to={contact.instagram} external testid="home-instagram-link">Follow on Instagram</TextLink>
       </div>
-      <div className="grid grid-cols-2 gap-1 md:grid-cols-4">
-        {IMG.instagram.map((src, i) => (
+      <div className="grid grid-cols-2 gap-1 md:grid-cols-3">
+        {instagramPosts.map((post, i) => (
           <a
-            key={src}
-            href={contact.instagram}
+            key={post.url}
+            href={post.url}
             target="_blank"
             rel="noreferrer"
             className="group relative block aspect-square overflow-hidden"
-            aria-label={`Instagram post ${i + 1} — placeholder`}
+            aria-label={`Instagram post ${i + 1}`}
+            data-testid={`instagram-post-${i}`}
           >
             <img
-              src={src}
-              alt={`Concert moment ${i + 1} — placeholder`}
+              src={post.img}
+              alt={`FilmsByPaddy Instagram post ${i + 1}`}
               loading="lazy"
               data-testid={`instagram-grid-image-${i}`}
               className="h-full w-full object-cover saturate-[0.75] transition-[transform,filter] duration-700 group-hover:scale-105 group-hover:saturate-100"
             />
+            <span className="absolute inset-0 flex items-center justify-center bg-[#080808]/45 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              <span className="flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.3em] text-[#F4F4F5]">
+                <Instagram size={14} className="text-[#FF5500]" /> View post
+              </span>
+            </span>
             <span className="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-[#FF5500] transition-transform duration-500 group-hover:scale-x-100" />
           </a>
         ))}
