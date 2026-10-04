@@ -374,7 +374,7 @@ function InstagramSection() {
               alt={`FilmsByPaddy Instagram post ${i + 1}`}
               loading="lazy"
               data-testid={`instagram-grid-image-${i}`}
-              className="h-full w-full object-cover saturate-[0.75] transition-[transform,filter] duration-700 group-hover:scale-105 group-hover:saturate-100"
+              className="h-full w-full object-cover saturate-[1.15] transition-[transform,filter] duration-700 group-hover:scale-105 group-hover:saturate-[1.3]"
             />
             <span className="absolute inset-0 flex items-center justify-center bg-[#080808]/45 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
               <span className="flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.3em] text-[#F4F4F5]">
