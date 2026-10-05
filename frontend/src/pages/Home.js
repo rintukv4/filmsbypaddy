@@ -117,7 +117,7 @@ function SelectedWork({ projects }) {
             <Reveal key={p.slug} y={70} className={L.wrap}>
               <Link to={`/work/${p.slug}`} data-testid={`project-card-${p.slug}`} className="group block md:px-10">
                 <div className="relative grid grid-cols-12 md:items-end">
-                  <span aria-hidden="true" className="text-outline-thin pointer-events-none absolute -top-14 left-0 z-0 hidden font-display text-[11rem] leading-none md:block">
+                  <span aria-hidden="true" className={`text-outline-thin pointer-events-none absolute -top-12 z-30 hidden font-display text-[9rem] leading-none md:block ${i % 3 === 1 ? "right-2" : "left-2"}`}>
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <div className={`relative z-10 col-span-12 row-start-1 ${L.img}`}>
