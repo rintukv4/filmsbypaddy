@@ -13,6 +13,7 @@ Premium, cinematic, responsive portfolio + lead-generation website for concert p
 - Design source of truth: `/app/design_guidelines.json` (Bebas Neue display, Inter body, #FF5500 accent, curated Unsplash pool).
 
 ## Implemented
+- 2026-10-05: Admin "Content Studio" at /admin (JWT auth, single owner account from env, brute-force lockout). Tabs: Projects (add/edit/delete, all fields + image uploads), Instagram grid (thumbnail + post URL per tile), Site images (hero/showreel posters, BTS, festivals, about portrait), Enquiries viewer. Uploads via Emergent object storage, served at /api/files/{path}. Public pages read /api/site-content with static fallbacks.
 - 2026-09-26 (V2 redesign): Awwwards-level cinematic editorial overhaul. Full-screen parallax hero with masked line-by-line reveal; asymmetrical overlapping project rows (no cards); slow editorial marquee; showreel player (poster + play/mute/fullscreen, video URL pluggable); cursor-follow image reveal on Artists directory; festivals archive; numbered services list; about with approach/kit/selected events; credits wall; Instagram grid; custom SVG logo mark + favicon; film grain overlay; Lenis; prefers-reduced-motion respected.
 - Backend: portfolio served from MongoDB with startup seed, `GET /api/portfolio`, `GET /api/portfolio/{slug}`, `POST /api/enquiries` (validated, honeypot).
 - Verified: 6 projects from DB; enquiry form E2E (filled + submitted + success screen); hero/work/project/artists pages at 375/768/1366px.

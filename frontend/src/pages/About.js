@@ -1,4 +1,5 @@
 import { Eyebrow, Layout, PlaceholderTag, SolidButton } from "@/components/Layout";
+import { useSiteContent } from "@/components/content";
 import { ImageReveal, MaskedLine, Reveal } from "@/components/motion";
 import { IMG, credits } from "@/data/site";
 
@@ -11,6 +12,7 @@ const approach = [
 const kit = ["Full-frame mirrorless system", "Fast prime lenses", "Gimbal + handheld cinema rig", "Lightroom · Premiere Pro"];
 
 export default function About() {
+  const { get } = useSiteContent();
   return (
     <Layout>
       <section className="px-5 pb-16 pt-36 md:px-10 md:pt-48">
@@ -24,7 +26,7 @@ export default function About() {
       <section className="grid gap-12 px-5 pb-24 md:grid-cols-12 md:px-10 md:pb-36">
         <div className="relative md:col-span-5">
           <ImageReveal
-            src={IMG.aboutPortrait}
+            src={get("aboutPortrait", IMG.aboutPortrait)}
             alt="Paddy holding a camera against the light — portrait placeholder"
             className="aspect-[4/5]"
             testid="about-portrait-image"
@@ -84,8 +86,8 @@ export default function About() {
             </p>
           </div>
           <div className="grid grid-cols-2 gap-3 md:col-span-7">
-            <ImageReveal src={IMG.bts[5]} alt="Shooting on a DSLR in the field — placeholder" className="aspect-square" />
-            <ImageReveal src={IMG.bts[3]} alt="Crew around technical gear — placeholder" className="aspect-square md:mt-12" delay={0.12} />
+            <ImageReveal src={get("bts.5", IMG.bts[5])} alt="Shooting on a DSLR in the field — placeholder" className="aspect-square" />
+            <ImageReveal src={get("bts.3", IMG.bts[3])} alt="Crew around technical gear — placeholder" className="aspect-square md:mt-12" delay={0.12} />
           </div>
         </div>
       </section>

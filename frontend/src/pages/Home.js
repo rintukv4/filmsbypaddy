@@ -5,9 +5,11 @@ import { ArrowUpRight, Instagram, Maximize, Play, Volume2, VolumeX } from "lucid
 import { EditorialMarquee, Eyebrow, Layout, PlaceholderTag, TextLink } from "@/components/Layout";
 import { ImageReveal, MaskedLine, ParallaxImage, Reveal, ease } from "@/components/motion";
 import ArtistIndex from "@/components/ArtistIndex";
+import { useSiteContent, fullUrl } from "@/components/content";
 import { IMG, VIDEO, contact, credits, instagramPosts } from "@/data/site";
 
 function Hero() {
+  const { get } = useSiteContent();
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "24%"]);
@@ -19,7 +21,7 @@ function Hero() {
       <motion.div style={{ y, scale }} className="absolute inset-0 will-change-transform">
         <video
           src={VIDEO.hero}
-          poster={IMG.hero}
+          poster={get("heroPoster", IMG.hero)}
           autoPlay
           muted
           loop
@@ -171,6 +173,7 @@ function ArtistsSection({ projects }) {
 }
 
 function Showreel() {
+  const { get } = useSiteContent();
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(true);
   const [time, setTime] = useState(0);
@@ -232,7 +235,7 @@ function Showreel() {
         <video
           ref={videoRef}
           src={VIDEO.showreel}
-          poster={IMG.showreelPoster}
+          poster={get("showreelPoster", IMG.showreelPoster)}
           muted
           loop
           playsInline
@@ -325,6 +328,7 @@ function Credits() {
 }
 
 function BehindTheFrame() {
+  const { get } = useSiteContent();
   return (
     <section className="px-5 py-28 md:px-10 md:py-40" data-testid="bts-section">
       <div className="grid gap-12 md:grid-cols-12 md:gap-8">
@@ -342,9 +346,9 @@ function BehindTheFrame() {
           </Reveal>
         </div>
         <div className="grid grid-cols-2 gap-3 md:col-span-7">
-          <ImageReveal src={IMG.bts[1]} alt="Camera operator silhouetted in stage light — placeholder" className="col-span-2 aspect-[16/9]" />
-          <ImageReveal src={IMG.bts[4]} alt="Hands on a cinema camera — placeholder" className="aspect-square md:mt-10" delay={0.1} />
-          <ImageReveal src={IMG.bts[0]} alt="Cinema camera rig on a dark set — placeholder" className="aspect-square" delay={0.2} />
+          <ImageReveal src={get("bts.1", IMG.bts[1])} alt="Camera operator silhouetted in stage light — placeholder" className="col-span-2 aspect-[16/9]" />
+          <ImageReveal src={get("bts.4", IMG.bts[4])} alt="Hands on a cinema camera — placeholder" className="aspect-square md:mt-10" delay={0.1} />
+          <ImageReveal src={get("bts.0", IMG.bts[0])} alt="Cinema camera rig on a dark set — placeholder" className="aspect-square" delay={0.2} />
         </div>
       </div>
     </section>
@@ -352,6 +356,8 @@ function BehindTheFrame() {
 }
 
 function InstagramSection() {
+  const { content } = useSiteContent();
+  const posts = content?.instagramPosts?.length ? content.instagramPosts : instagramPosts;
   return (
     <section className="py-28 md:py-40">
       <div className="mb-14 flex flex-wrap items-end justify-between gap-6 px-5 md:px-10">
@@ -359,7 +365,7 @@ function InstagramSection() {
         <TextLink to={contact.instagram} external testid="home-instagram-link">Follow on Instagram</TextLink>
       </div>
       <div className="grid grid-cols-2 gap-1 md:grid-cols-4">
-        {instagramPosts.map((post, i) => (
+        {posts.map((post, i) => (
           <a
             key={post.url}
             href={post.url}
@@ -370,7 +376,7 @@ function InstagramSection() {
             data-testid={`instagram-post-${i}`}
           >
             <img
-              src={post.img}
+              src={fullUrl(post.img)}
               alt={`FilmsByPaddy Instagram post ${i + 1}`}
               loading="lazy"
               data-testid={`instagram-grid-image-${i}`}
@@ -390,6 +396,7 @@ function InstagramSection() {
 }
 
 export default function Home({ projects }) {
+  const { get } = useSiteContent();
   return (
     <Layout>
       <Hero />
@@ -399,7 +406,7 @@ export default function Home({ projects }) {
       <ArtistsSection projects={projects} />
       <Showreel />
       <Credits />
-      <ParallaxImage src={IMG.texture} alt="Spotlight beam cutting through stage haze" className="h-[50vh] md:h-[75vh]" />
+      <ParallaxImage src={get("texture", IMG.texture)} alt="Spotlight beam cutting through stage haze" className="h-[50vh] md:h-[75vh]" />
       <BehindTheFrame />
       <InstagramSection />
     </Layout>

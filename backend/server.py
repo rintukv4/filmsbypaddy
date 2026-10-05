@@ -1,4 +1,5 @@
-from fastapi import FastAPI, APIRouter, HTTPException
+from fastapi import FastAPI, APIRouter, HTTPException, UploadFile, File, Request, Depends
+from fastapi.responses import Response
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -8,22 +9,97 @@ from pathlib import Path
 from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional
 import uuid
-from datetime import datetime, timezone
-
+from datetime import datetime, timezone, timedelta
+import bcrypt
+import jwt
+import requests
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-# MongoDB connection
 mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
-# Create the main app without a prefix
 app = FastAPI()
-
-# Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
+
+JWT_ALGORITHM = "HS256"
+JWT_SECRET = os.environ["JWT_SECRET"]
+ADMIN_EMAIL = os.environ["ADMIN_EMAIL"].lower()
+ADMIN_PASSWORD = os.environ["ADMIN_PASSWORD"]
+APP_NAME = "filmsbypaddy"
+
+STORAGE_BASE = (os.environ.get("INTEGRATION_PROXY_URL") or "").strip() or "https://integrations.emergentagent.com"
+STORAGE_URL = STORAGE_BASE.rstrip("/") + "/objstore/api/v1/storage"
+EMERGENT_KEY = os.environ.get("EMERGENT_LLM_KEY")
+storage_key = None
+
+
+def init_storage(force: bool = False):
+    global storage_key
+    if storage_key and not force:
+        return storage_key
+    resp = requests.post(f"{STORAGE_URL}/init", json={"emergent_key": EMERGENT_KEY}, timeout=30)
+    resp.raise_for_status()
+    storage_key = resp.json()["storage_key"]
+    return storage_key
+
+
+def put_object(path: str, data: bytes, content_type: str) -> dict:
+    key = init_storage()
+    resp = requests.put(
+        f"{STORAGE_URL}/objects/{path}",
+        headers={"X-Storage-Key": key, "Content-Type": content_type},
+        data=data, timeout=120,
+    )
+    resp.raise_for_status()
+    return resp.json()
+
+
+def get_object(path: str):
+    key = init_storage()
+    resp = requests.get(f"{STORAGE_URL}/objects/{path}", headers={"X-Storage-Key": key}, timeout=60)
+    if resp.status_code == 404:
+        init_storage(force=True)
+        resp = requests.get(f"{STORAGE_URL}/objects/{path}", headers={"X-Storage-Key": storage_key}, timeout=60)
+    resp.raise_for_status()
+    return resp.content, resp.headers.get("Content-Type", "application/octet-stream")
+
+
+def hash_password(password: str) -> str:
+    return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+
+
+def verify_password(plain: str, hashed: str) -> bool:
+    return bcrypt.checkpw(plain.encode("utf-8"), hashed.encode("utf-8"))
+
+
+def create_token(user_id: str, email: str) -> str:
+    payload = {
+        "sub": user_id,
+        "email": email,
+        "exp": datetime.now(timezone.utc) + timedelta(days=7),
+        "type": "access",
+    }
+    return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
+
+
+async def get_admin(request: Request) -> dict:
+    auth_header = request.headers.get("Authorization", "")
+    token = auth_header[7:] if auth_header.startswith("Bearer ") else None
+    if not token:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    try:
+        payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token expired")
+    except jwt.InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    user = await db.users.find_one({"email": payload.get("email"), "role": "admin"}, {"_id": 0, "password_hash": 0})
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authorized")
+    return user
 
 
 def u(photo_id: str) -> str:
@@ -89,6 +165,27 @@ SEED_PROJECTS = [
      "videoUrl": "", "featured": False, "sortOrder": 6},
 ]
 
+DEFAULT_SITE_CONTENT = {
+    "instagramPosts": [
+        {"url": "https://www.instagram.com/filmxaskn/p/DQ_iBWqgVc8/", "img": "/media/ig-post-1.jpg"},
+        {"url": "https://www.instagram.com/filmsbypaddy/p/DUwxL1YEwB-/", "img": "/media/ig-post-2.webp"},
+        {"url": "https://www.instagram.com/filmsbypaddy/p/DUzZPAYCCaO/", "img": "/media/ig-post-3.webp"},
+        {"url": "https://www.instagram.com/filmsbypaddy/p/DWd3PRwEzcm/", "img": "/media/ig-post-4.webp"},
+        {"url": "https://www.instagram.com/filmsbypaddy/p/DWvUFR8gJTN/", "img": "/media/ig-post-5.webp"},
+        {"url": "https://www.instagram.com/filmsbypaddy/p/DYhNGNpk4g4/", "img": "/media/ig-post-6.jpg"},
+        {"url": "https://www.instagram.com/filmsbypaddy/p/C3AnvjUxA7r/", "img": "/media/ig-post-7.jpg"},
+        {"url": "https://www.instagram.com/filmsbypaddy/p/C2wVGplRuWm/", "img": "/media/ig-post-8.jpg"},
+    ],
+    "images": {
+        "heroPoster": u("photo-1610487072862-4992dd8f68dc"),
+        "showreelPoster": SHOWREEL,
+        "texture": u("photo-1471877325906-aee7c2240b5f"),
+        "aboutPortrait": u("photo-1497316730643-415fac54a2af"),
+        "bts": BTS,
+        "festivals": FESTIVALS,
+    },
+}
+
 
 class EnquiryCreate(BaseModel):
     model_config = ConfigDict(extra="ignore")
@@ -113,11 +210,41 @@ class EnquiryResponse(BaseModel):
     status: str
 
 
+class LoginInput(BaseModel):
+    email: str
+    password: str
+
+
 @app.on_event("startup")
-async def seed_portfolio():
+async def startup():
+    try:
+        init_storage()
+        logger.info("Object storage initialized")
+    except Exception as e:
+        logger.error(f"Storage init failed: {e}")
+
+    await db.users.create_index("email", unique=True)
+    await db.login_attempts.create_index("identifier")
+
+    existing = await db.users.find_one({"email": ADMIN_EMAIL})
+    if existing is None:
+        await db.users.insert_one({
+            "id": str(uuid.uuid4()),
+            "email": ADMIN_EMAIL,
+            "password_hash": hash_password(ADMIN_PASSWORD),
+            "name": "Paddy",
+            "role": "admin",
+            "created_at": datetime.now(timezone.utc).isoformat(),
+        })
+        logger.info("Seeded admin user")
+
     if await db.portfolio.count_documents({}) == 0:
         await db.portfolio.insert_many([dict(p) for p in SEED_PROJECTS])
         logger.info("Seeded %d portfolio projects", len(SEED_PROJECTS))
+
+    if await db.site_content.count_documents({}) == 0:
+        await db.site_content.insert_one({"id": "main", **DEFAULT_SITE_CONTENT})
+        logger.info("Seeded site content")
 
 
 @api_router.get("/")
@@ -139,6 +266,12 @@ async def get_project(slug: str):
     return project
 
 
+@api_router.get("/site-content")
+async def get_site_content():
+    doc = await db.site_content.find_one({"id": "main"}, {"_id": 0})
+    return doc or {"id": "main", **DEFAULT_SITE_CONTENT}
+
+
 @api_router.post("/enquiries", response_model=EnquiryResponse)
 async def create_enquiry(input: EnquiryCreate):
     if input.honeypot:
@@ -148,6 +281,109 @@ async def create_enquiry(input: EnquiryCreate):
     enquiry["created_at"] = datetime.now(timezone.utc).isoformat()
     await db.enquiries.insert_one(enquiry)
     return EnquiryResponse(id=enquiry["id"], status="received")
+
+
+# ---------- Auth ----------
+
+@api_router.post("/auth/login")
+async def login(input: LoginInput, request: Request):
+    email = input.email.lower().strip()
+    identifier = f"{request.client.host}:{email}"
+    attempts = await db.login_attempts.find_one({"identifier": identifier})
+    if attempts and attempts.get("count", 0) >= 5:
+        locked_at = datetime.fromisoformat(attempts["locked_at"])
+        if datetime.now(timezone.utc) - locked_at < timedelta(minutes=15):
+            raise HTTPException(status_code=429, detail="Too many failed attempts. Try again in 15 minutes.")
+
+    user = await db.users.find_one({"email": email, "role": "admin"})
+    if not user or not verify_password(input.password, user["password_hash"]):
+        await db.login_attempts.update_one(
+            {"identifier": identifier},
+            {"$inc": {"count": 1}, "$set": {"locked_at": datetime.now(timezone.utc).isoformat()}},
+            upsert=True,
+        )
+        raise HTTPException(status_code=401, detail="Invalid email or password")
+
+    await db.login_attempts.delete_one({"identifier": identifier})
+    token = create_token(user["id"], email)
+    return {"token": token, "user": {"email": email, "name": user.get("name", "Admin"), "role": "admin"}}
+
+
+@api_router.get("/auth/me")
+async def auth_me(admin: dict = Depends(get_admin)):
+    return admin
+
+
+# ---------- Admin: content ----------
+
+@api_router.put("/admin/site-content")
+async def update_site_content(body: dict, admin: dict = Depends(get_admin)):
+    body.pop("_id", None)
+    body["id"] = "main"
+    await db.site_content.replace_one({"id": "main"}, body, upsert=True)
+    return {"status": "saved"}
+
+
+@api_router.post("/admin/portfolio")
+async def create_project(body: dict, admin: dict = Depends(get_admin)):
+    body.pop("_id", None)
+    slug = (body.get("slug") or "").strip()
+    if not slug or not body.get("title"):
+        raise HTTPException(status_code=422, detail="Slug and title are required")
+    if await db.portfolio.find_one({"slug": slug}):
+        raise HTTPException(status_code=409, detail="A project with this slug already exists")
+    await db.portfolio.insert_one(body)
+    return {"status": "created", "slug": slug}
+
+
+@api_router.put("/admin/portfolio/{slug}")
+async def update_project(slug: str, body: dict, admin: dict = Depends(get_admin)):
+    body.pop("_id", None)
+    body["slug"] = slug
+    result = await db.portfolio.replace_one({"slug": slug}, body)
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Project not found")
+    return {"status": "saved"}
+
+
+@api_router.delete("/admin/portfolio/{slug}")
+async def delete_project(slug: str, admin: dict = Depends(get_admin)):
+    result = await db.portfolio.delete_one({"slug": slug})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Project not found")
+    return {"status": "deleted"}
+
+
+@api_router.get("/admin/enquiries")
+async def list_enquiries(admin: dict = Depends(get_admin)):
+    items = await db.enquiries.find({}, {"_id": 0}).sort("created_at", -1).to_list(200)
+    return {"enquiries": items}
+
+
+# ---------- Admin: uploads ----------
+
+@api_router.post("/admin/upload")
+async def upload_image(file: UploadFile = File(...), admin: dict = Depends(get_admin)):
+    if not (file.content_type or "").startswith("image/"):
+        raise HTTPException(status_code=422, detail="Only image files are allowed")
+    ext = file.filename.split(".")[-1].lower() if file.filename and "." in file.filename else "jpg"
+    path = f"{APP_NAME}/uploads/admin/{uuid.uuid4()}.{ext}"
+    data = await file.read()
+    if len(data) > 25 * 1024 * 1024:
+        raise HTTPException(status_code=422, detail="File too large (max 25MB)")
+    result = put_object(path, data, file.content_type)
+    return {"url": f"/api/files/{result['path']}", "path": result["path"]}
+
+
+@api_router.get("/files/{path:path}")
+async def serve_file(path: str):
+    if not path.startswith(f"{APP_NAME}/"):
+        raise HTTPException(status_code=403, detail="Forbidden")
+    try:
+        data, content_type = get_object(path)
+    except Exception:
+        raise HTTPException(status_code=404, detail="File not found")
+    return Response(content=data, media_type=content_type)
 
 
 app.include_router(api_router)

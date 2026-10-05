@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 import { Eyebrow, Layout, PlaceholderTag } from "@/components/Layout";
 import { ImageReveal, MaskedLine, Reveal } from "@/components/motion";
+import { useSiteContent } from "@/components/content";
 import { IMG } from "@/data/site";
 
 export default function Festivals({ projects }) {
+  const { get } = useSiteContent();
   const events = useMemo(() => {
     const map = new Map();
     projects.forEach((p) => { if (!map.has(p.event)) map.set(p.event, p); });
@@ -34,7 +36,7 @@ export default function Festivals({ projects }) {
                   <div className={`relative col-span-1 row-start-1 md:col-span-7 ${i % 2 ? "md:col-start-6" : "md:col-start-1"}`}>
                     <div className="relative aspect-[16/10] overflow-hidden">
                       <img
-                        src={IMG.festivals[i % IMG.festivals.length]}
+                        src={get(`festivals.${i % 4}`, IMG.festivals[i % IMG.festivals.length])}
                         alt={`${p.event} festival crowd — placeholder`}
                         loading="lazy"
                         className="h-full w-full object-cover saturate-[0.8] transition-[transform,filter] duration-700 group-hover:scale-[1.045] group-hover:saturate-100"
@@ -62,7 +64,7 @@ export default function Festivals({ projects }) {
             </Reveal>
           ))}
         </div>
-        <ImageReveal src={IMG.festivals[2]} alt="Night festival crowd facing a towering stage — placeholder" className="mt-24 aspect-[16/9] md:mt-36 md:aspect-[21/9]" />
+        <ImageReveal src={get("festivals.2", IMG.festivals[2])} alt="Night festival crowd facing a towering stage — placeholder" className="mt-24 aspect-[16/9] md:mt-36 md:aspect-[21/9]" />
       </section>
     </Layout>
   );

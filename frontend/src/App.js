@@ -4,6 +4,7 @@ import axios from "axios";
 import Lenis from "lenis";
 import "@/App.css";
 import { ScrollTop } from "@/components/Layout";
+import { SiteContentContext } from "@/components/content";
 import { fallbackProjects } from "@/data/site";
 import Home from "@/pages/Home";
 import Work from "@/pages/Work";
@@ -13,6 +14,7 @@ import Festivals from "@/pages/Festivals";
 import Services from "@/pages/Services";
 import About from "@/pages/About";
 import Contact from "@/pages/Contact";
+import Admin from "@/pages/Admin";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -37,6 +39,7 @@ function useLenis() {
 
 function App() {
   const [projects, setProjects] = useState(fallbackProjects);
+  const [siteContent, setSiteContent] = useState(null);
   useLenis();
 
   useEffect(() => {
@@ -47,26 +50,35 @@ function App() {
         if (mounted && r.data.projects?.length) setProjects(r.data.projects);
       })
       .catch(() => {});
+    axios
+      .get(`${API}/site-content`)
+      .then((r) => {
+        if (mounted) setSiteContent(r.data);
+      })
+      .catch(() => {});
     return () => {
       mounted = false;
     };
   }, []);
 
   return (
-    <BrowserRouter>
-      <ScrollTop />
-      <Routes>
-        <Route path="/" element={<Home projects={projects} />} />
-        <Route path="/work" element={<Work projects={projects} />} />
-        <Route path="/work/:slug" element={<ProjectDetail projects={projects} />} />
-        <Route path="/artists" element={<Artists projects={projects} />} />
-        <Route path="/festivals" element={<Festivals projects={projects} />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="*" element={<Home projects={projects} />} />
-      </Routes>
-    </BrowserRouter>
+    <SiteContentContext.Provider value={siteContent}>
+      <BrowserRouter>
+        <ScrollTop />
+        <Routes>
+          <Route path="/" element={<Home projects={projects} />} />
+          <Route path="/work" element={<Work projects={projects} />} />
+          <Route path="/work/:slug" element={<ProjectDetail projects={projects} />} />
+          <Route path="/artists" element={<Artists projects={projects} />} />
+          <Route path="/festivals" element={<Festivals projects={projects} />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="*" element={<Home projects={projects} />} />
+        </Routes>
+      </BrowserRouter>
+    </SiteContentContext.Provider>
   );
 }
 
