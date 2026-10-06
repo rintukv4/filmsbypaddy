@@ -95,11 +95,12 @@ function Manifesto() {
           </Reveal>
         </div>
         <Reveal y={60} className="md:col-span-5 md:-mb-20">
-          <ImageReveal
+          <img
             src="/media/the-moment.webp"
             alt="Paddy filming a live set — camera rig silhouetted against stage beams"
-            className="aspect-[16/10]"
-            testid="manifesto-image"
+            loading="lazy"
+            className="h-auto w-full"
+            data-testid="manifesto-image"
           />
         </Reveal>
       </div>
