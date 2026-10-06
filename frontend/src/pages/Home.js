@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { ArrowUpRight, Instagram, Maximize, Play, Volume2, VolumeX } from "lucide-react";
-import { EditorialMarquee, Eyebrow, Layout, PlaceholderTag, TextLink } from "@/components/Layout";
+import { EditorialMarquee, Eyebrow, Layout, TextLink } from "@/components/Layout";
 import { ImageReveal, MaskedLine, ParallaxImage, Reveal, ease } from "@/components/motion";
 import ArtistIndex from "@/components/ArtistIndex";
 import { useSiteContent, fullUrl } from "@/components/content";
@@ -81,16 +81,28 @@ function Manifesto() {
   return (
     <section className="px-5 py-28 md:px-10 md:py-44">
       <Eyebrow className="mb-10">01 — The moment</Eyebrow>
-      <Reveal>
-        <h2 className="max-w-7xl font-display text-[12.5vw] uppercase leading-[0.86] md:text-[7.2vw]">
-          The moment <span className="text-outline">between the stage</span> and the crowd.
-        </h2>
-      </Reveal>
-      <Reveal delay={0.15} className="mt-14 flex md:justify-end">
-        <p className="max-w-md text-base leading-relaxed text-[#A1A1AA]">
-          I capture the energy of live music through photography and motion — from the artist's first step onto the stage to the final moment of the night.
-        </p>
-      </Reveal>
+      <div className="grid gap-12 md:grid-cols-12 md:items-end">
+        <div className="md:col-span-7">
+          <Reveal>
+            <h2 className="font-display text-[12.5vw] uppercase leading-[0.86] md:text-[6.8vw]">
+              The moment <span className="text-outline">between the stage</span> and the crowd.
+            </h2>
+          </Reveal>
+          <Reveal delay={0.15}>
+            <p className="mt-10 max-w-md text-base leading-relaxed text-[#A1A1AA]">
+              I capture the energy of live music through photography and motion — from the artist's first step onto the stage to the final moment of the night.
+            </p>
+          </Reveal>
+        </div>
+        <Reveal y={60} className="md:col-span-5 md:-mb-20">
+          <ImageReveal
+            src="/media/the-moment.webp"
+            alt="Paddy filming a live set — camera rig silhouetted against stage beams"
+            className="aspect-[16/10]"
+            testid="manifesto-image"
+          />
+        </Reveal>
+      </div>
     </section>
   );
 }

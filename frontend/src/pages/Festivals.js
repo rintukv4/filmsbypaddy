@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
-import { Eyebrow, Layout, PlaceholderTag } from "@/components/Layout";
+import { Eyebrow, Layout } from "@/components/Layout";
 import { ImageReveal, MaskedLine, Reveal } from "@/components/motion";
 import { useSiteContent } from "@/components/content";
 import { IMG } from "@/data/site";
@@ -41,7 +41,6 @@ export default function Festivals({ projects }) {
                         loading="lazy"
                         className="h-full w-full object-cover saturate-[0.8] transition-[transform,filter] duration-700 group-hover:scale-[1.045] group-hover:saturate-100"
                       />
-                      <PlaceholderTag />
                     </div>
                   </div>
                   <div className={`relative z-10 row-start-1 -mt-16 self-end md:mt-0 md:col-span-5 ${

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
-import { Eyebrow, Layout, PlaceholderTag } from "@/components/Layout";
+import { Eyebrow, Layout } from "@/components/Layout";
 import { MaskedLine, Reveal } from "@/components/motion";
 
 const FILTERS = ["ALL", "PHOTOGRAPHY", "CINEMATOGRAPHY", "FESTIVAL"];
@@ -56,7 +56,6 @@ export default function Work({ projects }) {
                         loading="lazy"
                         className="h-full w-full object-cover saturate-[0.8] transition-[transform,filter] duration-700 group-hover:scale-[1.045] group-hover:saturate-100"
                       />
-                      <PlaceholderTag />
                     </div>
                   </div>
                   <div className={`relative z-10 col-span-11 row-start-1 -mt-16 self-end md:mt-0 ${

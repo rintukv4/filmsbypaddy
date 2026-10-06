@@ -254,14 +254,3 @@ export function Layout({ children }) {
     </div>
   );
 }
-
-export function PlaceholderTag({ label = "Placeholder media — replace with project selects", className = "" }) {
-  return (
-    <span
-      data-testid="media-placeholder-label"
-      className={`absolute right-4 top-4 z-10 max-w-[220px] border border-white/25 bg-black/40 px-2.5 py-1.5 text-right text-[8px] uppercase leading-relaxed tracking-[0.25em] text-white/70 backdrop-blur-sm ${className}`}
-    >
-      {label}
-    </span>
-  );
-}

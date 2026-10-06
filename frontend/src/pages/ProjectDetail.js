@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { Link, useParams } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowLeft, ArrowUpRight, Play } from "lucide-react";
-import { Eyebrow, Layout, PlaceholderTag, SolidButton } from "@/components/Layout";
+import { Eyebrow, Layout, SolidButton } from "@/components/Layout";
 import { ImageReveal, MaskedLine, Reveal } from "@/components/motion";
 
 function Hero({ p }) {
@@ -17,7 +17,6 @@ function Hero({ p }) {
         <img src={p.heroImage} alt={`${p.artist} live at ${p.event} — placeholder media`} className="h-full w-full scale-110 object-cover" />
       </motion.div>
       <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-[#080808]/20 to-[#080808]/40" />
-      <PlaceholderTag className="hidden md:block top-28 right-10" />
       <div className="relative z-10 w-full px-5 pb-16 md:px-10">
         <MaskedLine delay={0.15}>
           <span className="text-[10px] font-medium uppercase tracking-[0.4em] text-[#F4F4F5]/80">
@@ -112,7 +111,6 @@ export default function ProjectDetail({ projects }) {
               <span className="absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-black/30 backdrop-blur-sm">
                 <Play size={20} className="ml-0.5 text-[#F4F4F5]" fill="currentColor" />
               </span>
-              <PlaceholderTag label="Aftermovie placeholder — add video URL" />
             </>
           )}
         </div>

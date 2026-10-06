@@ -1,4 +1,4 @@
-import { Eyebrow, Layout, PlaceholderTag, SolidButton } from "@/components/Layout";
+import { Eyebrow, Layout, SolidButton } from "@/components/Layout";
 import { useSiteContent } from "@/components/content";
 import { ImageReveal, MaskedLine, Reveal } from "@/components/motion";
 import { IMG, credits } from "@/data/site";
@@ -31,7 +31,6 @@ export default function About() {
             className="aspect-[4/5]"
             testid="about-portrait-image"
           />
-          <PlaceholderTag label="Portrait placeholder — add your photo" />
         </div>
         <div className="flex flex-col justify-center md:col-span-6 md:col-start-7">
           <Reveal>
